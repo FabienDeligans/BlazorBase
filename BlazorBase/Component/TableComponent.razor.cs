@@ -175,5 +175,13 @@ namespace BlazorBase.Component
             Clear();
             OnInitialized();
         }
+
+
+        private void PageSizeChange(ChangeEventArgs obj)
+        {
+            var val = int.Parse(obj.Value.ToString()); 
+            if (val < 0) val = 5;
+            ChangePageSize(val);
+        }
     }
 }

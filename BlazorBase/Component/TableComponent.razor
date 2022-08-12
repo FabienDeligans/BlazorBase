@@ -3,84 +3,87 @@
 @using System.Globalization
 @typeparam T
 
-<div class="position-static">
+<div class=" container-fluid position-static">
 
-    @if (Search)
-    {
-        <div class="row">
+    <div class="row">
+        @if (Search)
+        {
             <div class="col-6">
                 <div class="row">
                     <div class="col-6">
                         <input class="form-control" type="text" @bind-value="_filter" @bind-value:event="oninput" @onkeyup="@OnValueChange" placeholder="Search" id="search" />
                     </div>
-                    <div class="btn btn-info col-2" @onclick="Clear">
-                        Clear
+                    <div class="col-6">
+                        <label class="btn btn-info" @onclick="Clear">Clear</label>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 fst-italic" style="font-size: 11px">
                         @Quantity.ToString("N0") Items trouvés
                     </div>
                 </div>
             </div>
-        </div>
-    }
-    <div style="overflow-y: auto; max-height: 500px;">
+        }
 
-        <table class="table table-hover table-sm">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-check form-switch ">
+                        <input class="form-check-input" type="checkbox" @onchange="() => { Pagination = !Pagination; }" />
+                        <label class="col">Afficher tout</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="" style="overflow-y: auto; max-height: @(Pagination ? "500px" : "min-content")">
+
+        <table class="table table-bordered table-hover table-sm">
             <thead>
-                <tr class="table-light">
-                    @TableHeader
-                </tr>
+                <tr class="table-light " style="@(Pagination ? "position:sticky; top:0px":"")">@TableHeader</tr>
             </thead>
             <tbody>
                 @foreach (var item in GetPage())
                 {
                     @if (!Accordion)
                     {
-                        <tr>@RowTemplate(item)</tr>
+                        <tr style="vertical-align: middle">@RowTemplate(item)</tr>
                         @if (RenderFragmentCollapse != null)
                         {
-                            <tr class="border border-5 border-info">
+                            <tr class="border border-5 border-info" style="vertical-align: middle">
                                 @if (WithTab)
                                 {
                                     <td></td>
                                 }
-                                <td colspan="@NbCol">
-                                    @RenderFragmentCollapse(item)
-                                </td>
+                                <td colspan="@NbCol">@RenderFragmentCollapse(item)</td>
                             </tr>
                         }
                     }
                     else
                     {
-                        <tr class="@(item.Equals(_item) && Collapse ? "border border-5 border-info" : "")" @onclick="(()=>Display(item))">
-                            @RowTemplate(item)
-                        </tr>
+                        <tr style="vertical-align: middle" class="@(item.Equals(_item) && Collapse ? "border border-5 border-info" : "")" @onclick="(()=>Display(item))">@RowTemplate(item)</tr>
                         @if (item.Equals(_item) && Collapse)
                         {
-                            <tr class="border border-5 border-info">
+                            <tr class="border border-5 border-info" style="vertical-align: middle">
                                 @if (WithTab)
                                 {
                                     <td></td>
                                 }
-                                <td colspan="@NbCol">
-                                    @RenderFragmentCollapse(item)
-                                </td>
+                                <td colspan="@NbCol">@RenderFragmentCollapse(item)</td>
                             </tr>
                         }
                     }
                 }
             </tbody>
-            <tfoot>
-            </tfoot>
         </table>
 
     </div>
 
     @if (Pagination)
     {
-        <hr style="align-content: center; height: 4px"/>
+        <hr style="align-content: center; height: 4px" />
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
                 <li class="page-item">
@@ -116,6 +119,9 @@
                     </li>
                     <li class="page-item">
                         <button class="btn @(PageSize == 20 ? "btn-info" : "btn-light")" @onclick="() => ChangePageSize(20)">20</button>
+                    </li>
+                    <li class="page-item">
+                        <input type="number" class="form-control col-2" @onchange="PageSizeChange" />
                     </li>
                     <li class="page-item">
                         <button class="btn btn-light" disabled="">Par pages</button>
