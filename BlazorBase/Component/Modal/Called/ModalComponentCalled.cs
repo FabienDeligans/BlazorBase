@@ -2,7 +2,7 @@
 using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorBase.Modal.Called
+namespace BlazorBase.Component.Modal.Called
 {
     public abstract class ModalComponentCalled : ComponentBase, IModalComponentCalled
     {

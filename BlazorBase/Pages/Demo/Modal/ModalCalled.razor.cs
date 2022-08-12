@@ -1,6 +1,6 @@
-﻿using BlazorBase.Modal.Called;
+﻿using BlazorBase.Component.Modal.Called;
 
-namespace BlazorBase.Pages.Modal
+namespace BlazorBase.Pages.Demo.Modal
 {
     public partial class ModalCalled : ModalComponentCalled
     {

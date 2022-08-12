@@ -1,0 +1,33 @@
+﻿@page "/callerModal"
+@using BlazorBase.Model
+@using BlazorBase.Pages.Demo.Modal
+@inherits BlazorBase.Component.Modal.Caller.ModalComponentCaller
+
+<h3>CallerModal and TableComponent</h3>
+
+<AuthorizeView Roles="admin">
+
+    <p>
+        <TableComponent CustomItems="ModelTestList"
+                        Search="true"
+                        GetFilterableText=@(v => $"{v.Id} {v.Name}")
+                        Pagination="true"
+                        PerPage="true"
+                        PageSize="10"
+                        @ref="TableModelComponent">
+            <TableHeader>
+                <th><button class="btn btn-light" @onclick="@(() => TableModelComponent.Sort(nameof(ModelTest.Id)))"><b>Id</b></button></th>
+                <th><button class="btn btn-light" @onclick="@(() => TableModelComponent.Sort(nameof(ModelTest.Name)))"><b>Name</b></button></th>
+                <th><button class="btn btn-light"><b>Update</b></button></th>
+                <th><button class="btn btn-light"><b>Delete</b></button></th>
+            </TableHeader>
+            <RowTemplate Context="ctx">
+                <td>@ctx.Id</td>
+                <td>@ctx.Name</td>
+                <td><button class="btn btn-info btn-sm" @onclick="@(() => ShowModal<ModalCalled>(ctx.Id.ToString(), "Update"))">Show Modal Update</button></td>
+                <td><button class="btn btn-info btn-sm" @onclick="@(() => ShowModal<ModalCalled>(ctx.Id.ToString(), "Delete"))">Show Modal Delete</button></td>
+            </RowTemplate>
+        </TableComponent>
+    </p>
+
+</AuthorizeView>

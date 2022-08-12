@@ -1,7 +1,7 @@
 ﻿using Blazored.Modal;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorBase.Modal.Called
+namespace BlazorBase.Component.Modal.Called
 {
     public interface IModalComponentCalled : IComponent
     {

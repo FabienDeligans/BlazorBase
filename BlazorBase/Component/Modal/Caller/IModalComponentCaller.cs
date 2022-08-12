@@ -1,7 +1,7 @@
 ﻿using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorBase.Modal.Caller
+namespace BlazorBase.Component.Modal.Caller
 {
     public interface IModalComponentCaller
     {
