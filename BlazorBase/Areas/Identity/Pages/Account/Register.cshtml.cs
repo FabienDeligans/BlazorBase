@@ -105,13 +105,19 @@ namespace BlazorBase.Areas.Identity.Pages.Account
                 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var createUser = await _userManager.CreateAsync(user, Input.Password);
 
-                if (result.Succeeded)
+                if (createUser.Succeeded)
                 {
                     if (Input.Email.Equals("deligans@gmail.com"))
                     {
-                        var role = await _roleManager.CreateAsync(new IdentityRole("admin"));
+                        var role = new IdentityRole("admin");
+                        var createRole = await _roleManager.CreateAsync(role);
+
+                        var createRoleUser = await _userManager.AddToRoleAsync(user, role.Name); 
+
+                        role = new IdentityRole("user");
+                        createRole = await _roleManager.CreateAsync(role);
                     }
 
 
@@ -127,7 +133,7 @@ namespace BlazorBase.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
-                foreach (var error in result.Errors)
+                foreach (var error in createUser.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
