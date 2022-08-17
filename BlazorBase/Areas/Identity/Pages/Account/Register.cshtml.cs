@@ -112,12 +112,12 @@ namespace BlazorBase.Areas.Identity.Pages.Account
                     if (Input.Email.Equals("deligans@gmail.com"))
                     {
                         var role = new IdentityRole("admin");
-                        var createRole = await _roleManager.CreateAsync(role);
+                        await _roleManager.CreateAsync(role);
 
                         var createRoleUser = await _userManager.AddToRoleAsync(user, role.Name); 
 
                         role = new IdentityRole("user");
-                        createRole = await _roleManager.CreateAsync(role);
+                        await _roleManager.CreateAsync(role);
                     }
 
 

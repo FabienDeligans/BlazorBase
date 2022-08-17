@@ -1,3 +1,4 @@
+using System.Text;
 using BlazorBase.Areas.Identity;
 using BlazorBase.Data;
 using Blazored.Modal;
@@ -21,7 +22,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 
-builder.Services.AddBlazoredModal(); 
+builder.Services.AddBlazoredModal();
 
 var app = builder.Build();
 

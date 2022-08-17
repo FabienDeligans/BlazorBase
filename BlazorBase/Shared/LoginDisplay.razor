@@ -1,6 +1,8 @@
 ﻿<AuthorizeView>
     <Authorized>
-        <a href="/manageRoleToUser">Manage Roles</a>
+        <AuthorizeView Roles="admin" Context="ctx">
+            <a href="/manageRoleToUser">Manage Roles</a>
+        </AuthorizeView>
         <a href="Identity/Account/Manage/ChangePassword">Hello, @context.User.Identity?.Name !</a>
         <form method="post" action="Identity/Account/LogOut">
             <button type="submit" class="nav-link btn btn-link">Log out</button>

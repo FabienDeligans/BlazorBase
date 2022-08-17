@@ -5,8 +5,9 @@ namespace BlazorBase.Areas.Identity.Manage
 {
     public partial class ManageRoleToUser
     {
-        private List<string> ListUsers { get; set; }
-        private List<string> ListRoles { get; set; }
+        public List<IdentityUser> ListUsers { get; set; }
+        public List<IdentityUser> ListUsers2 { get; set; }
+        public List<IdentityRole> ListRoles { get; set; }
         private List<string> ListRolesOfUser { get; set; } = new List<string>();
 
         private IdentityUser User { get; set; }
@@ -14,31 +15,39 @@ namespace BlazorBase.Areas.Identity.Manage
         public List<string> ListToSave { get; set; }
         public string? Email { get; set; }
 
+        [Inject]
+        public UserManager<IdentityUser>? UserManager { get; set; }
+
+        [Inject]
+        public RoleManager<IdentityRole>? RoleManager { get; set; }
+
         protected override void OnInitialized()
         {
-            ListUsers = UserManager.Users.OrderBy(v => v.UserName).Select(v => v.Email).ToList();
-            ListRoles = RoleManager.Roles.OrderBy(v => v.Name).Select(v => v.Name).ToList();
+            ListUsers = UserManager.Users.OrderBy(v => v.UserName).ToList();
+            ListRoles = RoleManager.Roles.OrderBy(v => v.Name).ToList();
 
             User = new IdentityUser();
             Role = new IdentityRole();
+
+            ListUsers2 = new List<IdentityUser>();
+            foreach (var identityUser in ListUsers)
+            {
+                ListUsers2.Add(identityUser);
+            }
         }
 
-        private async Task GetRole(ChangeEventArgs obj)
+        private async void GetRole(string userEmail)
         {
-            if (!string.IsNullOrEmpty(obj.Value.ToString()))
-            {
-                var param = obj.Value.ToString();
+            User = await UserManager.FindByEmailAsync(userEmail);
 
-                User = await UserManager.FindByEmailAsync(obj.Value.ToString());
-                
-                var listRole = await UserManager.GetRolesAsync(User);
-                ListRolesOfUser = listRole.ToList();
-            }
+            var listRole = await UserManager.GetRolesAsync(User);
+            ListRolesOfUser = listRole.ToList();
+            StateHasChanged();
         }
 
         private void Valider()
         {
-            var list = ListToSave; 
+            var list = ListToSave;
         }
     }
 }
