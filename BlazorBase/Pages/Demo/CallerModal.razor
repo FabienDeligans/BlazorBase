@@ -5,7 +5,7 @@
 
 <h3>CallerModal and TableComponent</h3>
 
-<AuthorizeView Roles="admin">
+<AuthorizeView Roles="user">
 
     <p>
         <TableComponent CustomItems="ModelTestList"
@@ -16,16 +16,20 @@
                         PageSize="10"
                         @ref="TableModelComponent">
             <TableHeader>
-                <th><button class="btn btn-light" @onclick="@(() => TableModelComponent.Sort(nameof(ModelTest.Id)))"><b>Id</b></button></th>
-                <th><button class="btn btn-light" @onclick="@(() => TableModelComponent.Sort(nameof(ModelTest.Name)))"><b>Name</b></button></th>
-                <th><button class="btn btn-light"><b>Update</b></button></th>
-                <th><button class="btn btn-light"><b>Delete</b></button></th>
+                <th><button class="btn btn-light" @onclick="@(() => TableModelComponent.SortBy(v => v.Id))"><b>Id</b></button></th>
+                <th><button class="btn btn-light" @onclick="@(() => TableModelComponent.SortBy(v => v.Name))"><b>Name</b></button></th>
+                <AuthorizeView Roles="admin" Context="admCtx">
+                    <th><button class="btn btn-light"><b>Update</b></button></th>
+                    <th><button class="btn btn-light"><b>Delete</b></button></th>
+                </AuthorizeView>
             </TableHeader>
             <RowTemplate Context="ctx">
                 <td>@ctx.Id</td>
-                <td>@ctx.Name</td>
-                <td><button class="btn btn-info btn-sm" @onclick="@(() => ShowModal<ModalCalled>(ctx.Id.ToString(), "Update"))">Show Modal Update</button></td>
-                <td><button class="btn btn-info btn-sm" @onclick="@(() => ShowModal<ModalCalled>(ctx.Id.ToString(), "Delete"))">Show Modal Delete</button></td>
+                <td><ToolTip Text="@ctx.Name">@ctx.Name</ToolTip></td>
+                <AuthorizeView Roles="admin" Context="admCtx">
+                    <td><button class="btn btn-info btn-sm" @onclick="@(() => ShowModal<ModalCalled>(ctx.Id.ToString(), "Update"))">Show Modal Update</button></td>
+                    <td><button class="btn btn-info btn-sm" @onclick="@(() => ShowModal<ModalCalled>(ctx.Id.ToString(), "Delete"))">Show Modal Delete</button></td>
+                </AuthorizeView>
             </RowTemplate>
         </TableComponent>
     </p>

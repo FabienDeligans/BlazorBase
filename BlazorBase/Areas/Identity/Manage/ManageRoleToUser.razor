@@ -1,31 +1,67 @@
 ﻿@page "/manageRoleToUser"
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject RoleManager<IdentityRole> RoleManager
+
 
 <h3>Manage Role/User</h3>
 
+<br />
+<AuthorizeView Roles="admin">
 
-<div class="container">
-    <div class="row">
-        <div class="col-4">
-            User
-            @foreach (var user in ListUsers)
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3"><div>Choisir un utilisateur : </div></div>
+            <div class="col-3"><div>Cliquer pour supprimer un role à l'utilisateur : </div></div>
+            <div class="col-3"><div>Cliquer pour ajouter un role à l'utilisateur</div></div>
+            @if (!string.IsNullOrEmpty(User.Email))
             {
-                <button class="btn btn-info" @onclick="@(() => GetRole(user.Email))">@user.Email</button>
+                <div class="col-3"><div>Nouveau password</div></div>
             }
         </div>
-        <div class="col-4">
-            Roles du user
-            @foreach (var userRole in ListRolesOfUser)
-            {
-                <button class="btn btn-primary">Delete role : @userRole</button>
-            }
-        </div>
-        <div class="col-4">
-            Ajouter un Role à ce user
-            @foreach (var role in ListRoles)
-            {
-                <div>@role.Name</div>
-            }
+
+        <br />
+
+        <div class="row">
+            <div class="col-3">
+                <select @onchange="GetRoles" class="form-select" size="15">
+                    <option></option>
+                    @foreach (var user in ListUsers)
+                    {
+                        <option value="@user">@user</option>
+                    }
+                </select>
+                @if (!string.IsNullOrEmpty(User.Email))
+                {
+                    <div><button class="btn btn-danger" @onclick="@RemoveUser">Supprime l'utilisateur</button></div>
+                }
+            </div>
+            <div class="col-3">
+                @if (!string.IsNullOrEmpty(User.Email))
+                {
+                    @foreach (var userRole in ListRolesOfUser)
+                    {
+                        <div><button class="btn btn-info" @onclick="@(() => RemoveRole(userRole))">@userRole</button></div>
+                    }
+                }
+            </div>
+            <div class="col-3">
+                @if (!string.IsNullOrEmpty(User.Email))
+                {
+                    @foreach (var role in DisplayRoles = User is not null ? ListRoles.Where(v => !ListRolesOfUser.Contains(v)).ToList() : ListRoles)
+                    {
+                        <div><button class="btn btn-info" @onclick="@(()=>AddRole(role))">@role</button></div>
+                    }
+                }
+            </div>
+            <div class="col-3">
+                @if (!string.IsNullOrEmpty(User.Email))
+                {
+                    <input class="form-control" @bind="_pass" />
+                    <div align="right"><button class="btn btn-danger" @onclick="@(() => NewPassword(_pass))">Change</button></div>
+                }
+            </div>
         </div>
     </div>
-</div>
 
+</AuthorizeView>

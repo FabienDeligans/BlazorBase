@@ -24,6 +24,8 @@ builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuth
 
 builder.Services.AddBlazoredModal();
 
+Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

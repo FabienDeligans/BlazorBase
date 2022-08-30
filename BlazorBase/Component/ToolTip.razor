@@ -1,0 +1,16 @@
+﻿<div class="tooltip-wrapper">
+    @if (!string.IsNullOrEmpty(Text))
+    {
+        <span>@Text</span>
+        @ChildContent
+    }
+    else
+    {
+        @ChildContent
+    }
+</div>
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public string Text { get; set; }
+}

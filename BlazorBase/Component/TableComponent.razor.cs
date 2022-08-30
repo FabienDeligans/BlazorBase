@@ -1,4 +1,5 @@
-﻿using System.Timers;
+﻿using System.Linq.Expressions;
+using System.Timers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -42,6 +43,9 @@ namespace BlazorBase.Component
         [Parameter]
         public bool WithTab { get; set; }
 
+        [Parameter]
+        public string Height { get; set; } = "500px";
+
         private IEnumerable<T> Items { get; set; }
         public int Quantity { get; set; }
         private bool SortByAscending { get; set; }
@@ -49,6 +53,7 @@ namespace BlazorBase.Component
         private int Index { get; set; } = 0;
         private int Count { get; set; }
         private List<int> Pages { get; set; }
+        public bool ButtonPagination { get; set; }
 
         private string _filter;
         private T _item;
@@ -60,7 +65,7 @@ namespace BlazorBase.Component
             NbCol = typeof(T).GetProperties().Length;
             if (WithTab)
             {
-                NbCol --; 
+                NbCol--;
             }
 
             Items = CustomItems;
@@ -114,7 +119,7 @@ namespace BlazorBase.Component
             _item = item;
             StateHasChanged();
         }
-        
+
         private void Clear()
         {
             Quantity = CustomItems.Count();
@@ -122,12 +127,14 @@ namespace BlazorBase.Component
             StateHasChanged();
         }
 
-        public void Sort(string property)
+        public void SortBy(Expression<Func<T, object>> predicate)
         {
             Items = CustomItems;
-            Items = SortByAscending ?
-                Items.OrderBy(v => v.GetType().GetProperty(property)?.GetValue(v)) :
-                Items.OrderByDescending(v => v.GetType().GetProperty(property)?.GetValue(v));
+
+            Items = SortByAscending
+                ? Items.AsQueryable().OrderByDescending(predicate)
+                : Items.AsQueryable().OrderBy(predicate);
+
             SortByAscending = !SortByAscending;
             StateHasChanged();
         }
@@ -179,7 +186,7 @@ namespace BlazorBase.Component
 
         private void PageSizeChange(ChangeEventArgs obj)
         {
-            var val = int.Parse(obj.Value.ToString()); 
+            var val = int.Parse(obj.Value.ToString());
             if (val < 0) val = 5;
             ChangePageSize(val);
         }
