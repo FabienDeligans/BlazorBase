@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorBase.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class AuthSqlServerContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public AuthSqlServerContext(DbContextOptions<AuthSqlServerContext> options)
             : base(options)
         {
         }
