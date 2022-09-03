@@ -1,7 +1,6 @@
 ﻿using BlazorBase.Component;
 using BlazorBase.Component.Modal.Caller;
 using BlazorBase.Model;
-using Blazored.Modal;
 
 namespace BlazorBase.Pages.Demo
 {
