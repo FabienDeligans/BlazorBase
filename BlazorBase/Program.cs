@@ -1,6 +1,7 @@
 using System.Text;
 using BlazorBase.Areas.Identity;
 using BlazorBase.Data;
+using BlazorBase.Services;
 using Blazored.Modal;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +23,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 builder.Services.AddBlazoredModal();
+
+builder.Services.AddHttpClient();
+builder.Services.AddHttpClient<ServiceBase>();
 
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 

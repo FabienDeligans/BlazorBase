@@ -9,14 +9,15 @@
     <p>
         <TableComponent CustomItems="ModelTestList"
                         Search="true"
-                        GetFilterableText=@(v => $"{v.Id} {v.Name}")
+                        GetFilterableText=@(v => $"{v.Id} {v.Data} {v.Numeric}")
                         Pagination="true"
                         PerPage="true"
                         PageSize="10"
                         @ref="TableModelComponent">
             <TableHeader>
                 <th><button class="btn btn-light" @onclick="@(() => TableModelComponent.SortBy(v => v.Id))"><b>Id</b></button></th>
-                <th><button class="btn btn-light" @onclick="@(() => TableModelComponent.SortBy(v => v.Name))"><b>Name</b></button></th>
+                <th><button class="btn btn-light" @onclick="@(() => TableModelComponent.SortBy(v => v.Data))"><b>Name</b></button></th>
+                <th><button class="btn btn-light" @onclick="@(() => TableModelComponent.SortBy(v => v.Numeric))"><b>Name</b></button></th>
                 <AuthorizeView Roles="admin" Context="admCtx">
                     <th><button class="btn btn-light"><b>Update</b></button></th>
                     <th><button class="btn btn-light"><b>Delete</b></button></th>
@@ -24,7 +25,8 @@
             </TableHeader>
             <RowTemplate Context="ctx">
                 <td>@ctx.Id</td>
-                <td><ToolTip Text="@ctx.Name">@ctx.Name</ToolTip></td>
+                <td><ToolTip Text="@ctx.Data">@ctx.Data</ToolTip></td>
+                <td>@ctx.Numeric</td>
                 <AuthorizeView Roles="admin" Context="admCtx">
                     <td><button class="btn btn-info btn-sm" @onclick="@(() => ShowModal<ModalCalled>(ctx.Id.ToString(), "Update"))">Show Modal Update</button></td>
                     <td><button class="btn btn-info btn-sm" @onclick="@(() => ShowModal<ModalCalled>(ctx.Id.ToString(), "Delete"))">Show Modal Delete</button></td>

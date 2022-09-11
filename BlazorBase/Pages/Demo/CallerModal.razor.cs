@@ -1,25 +1,35 @@
 ﻿using BlazorBase.Component;
 using BlazorBase.Component.Modal.Caller;
 using BlazorBase.Model;
+using BlazorBase.Services;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorBase.Pages.Demo
 {
     public partial class CallerModal : ModalComponentCaller
     {
-        private List<ModelTest>ModelTestList { get; set; }
-        public TableComponent<ModelTest> TableModelComponent { get; set; }
+        [Inject]
+        public ServiceBase ServiceBase { get; set; }
 
-        protected override void OnInitialized()
+        private List<Truc>ModelTestList { get; set; }
+        public TableComponent<Truc> TableModelComponent { get; set; }
+
+        protected override async Task OnInitializedAsync()
         {
-            ModelTestList = new List<ModelTest>();
-            for (var i = 0; i < 357; i++)
+            ModelTestList = new List<Truc>();
+            for (var i = 0; i < 50; i++)
             {
-                ModelTestList.Add(new ModelTest()
+                var truc = new Truc()
                 {
-                    Id = i, 
-                    Name = @$"Name-{i}"
-                });
+                    Id = i,
+                    Data = @$"Name-{i}",
+                    Numeric = Faker.RandomNumber.Next(0, 50)
+                };
+               await ServiceBase.CreateAsync(truc);
             }
+
+            var result = await ServiceBase.ReadAllAsync<Truc>();
+            ModelTestList = result.ToList();
         }
     }
 }
