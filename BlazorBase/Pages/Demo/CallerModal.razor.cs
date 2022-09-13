@@ -16,17 +16,17 @@ namespace BlazorBase.Pages.Demo
 
         protected override async Task OnInitializedAsync()
         {
-            ModelTestList = new List<Truc>();
-            for (var i = 0; i < 50; i++)
-            {
-                var truc = new Truc()
-                {
-                    Id = i,
-                    Data = @$"Name-{i}",
-                    Numeric = Faker.RandomNumber.Next(0, 50)
-                };
-               await ServiceBase.CreateAsync(truc);
-            }
+            //ModelTestList = new List<Truc>();
+            //for (var i = 0; i < 50; i++)
+            //{
+            //    var truc = new Truc()
+            //    {
+            //        Id = i,
+            //        Data = @$"Name-{i}",
+            //        Numeric = Faker.RandomNumber.Next(0, 50)
+            //    };
+            //   await ServiceBase.CreateAsync(truc);
+            //}
 
             var result = await ServiceBase.ReadAllAsync<Truc>();
             ModelTestList = result.ToList();
