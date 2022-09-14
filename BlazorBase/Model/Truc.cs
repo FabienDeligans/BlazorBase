@@ -4,7 +4,7 @@ namespace BlazorBase.Model
 {
     public class Truc
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [Range(0.0, 100.0, ErrorMessage = "Value must be between {1} and {2}")]

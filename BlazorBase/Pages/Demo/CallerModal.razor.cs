@@ -11,25 +11,42 @@ namespace BlazorBase.Pages.Demo
         [Inject]
         public ServiceBase ServiceBase { get; set; }
 
-        private List<Truc>ModelTestList { get; set; }
+        private List<Truc> ModelTestList { get; set; }
         public TableComponent<Truc> TableModelComponent { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            //ModelTestList = new List<Truc>();
-            //for (var i = 0; i < 50; i++)
-            //{
-            //    var truc = new Truc()
-            //    {
-            //        Id = i,
-            //        Data = @$"Name-{i}",
-            //        Numeric = Faker.RandomNumber.Next(0, 50)
-            //    };
-            //   await ServiceBase.CreateAsync(truc);
-            //}
-
             var result = await ServiceBase.ReadAllAsync<Truc>();
             ModelTestList = result.ToList();
+            foreach (var truc in ModelTestList)
+            {
+                await ServiceBase.DeleteOneAsync<Truc>(truc.Id);
+            }
+
+            ModelTestList = new List<Truc>();
+            for (var i = 0; i < 50; i++)
+            {
+                try
+                {
+
+                    var truc = new Truc()
+                    {
+                        Data = @$"Name-{i}",
+                        Numeric = Faker.RandomNumber.Next(0, 500),
+                        Now = DateTime.Now
+                    };
+                    await ServiceBase.CreateAsync(truc);
+                }
+                catch (Exception e)
+                {
+                    Error = e.Message; 
+                }
+            }
+
+            result = await ServiceBase.ReadAllAsync<Truc>();
+            ModelTestList = result.ToList();
         }
+
+        public string Error { get; set; }
     }
 }
