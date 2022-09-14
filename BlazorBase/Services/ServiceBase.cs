@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using System.Data;
-using System.Net.Mime;
+﻿using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 
